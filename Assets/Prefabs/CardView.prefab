@@ -263,9 +263,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wrapper: {fileID: 4087854333645624704}
   mana: {fileID: 8779038827004205395}
-  name: {fileID: 707477743500643651}
-  desc: {fileID: 2162294506206141037}
   cardImage: {fileID: 8996407709764745827}
+  cardName: {fileID: 707477743500643651}
+  desc: {fileID: 2162294506206141037}
 --- !u!210 &2792337331265617506
 SortingGroup:
   m_ObjectHideFlags: 0
