@@ -1,5 +1,6 @@
 using System;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CardView : MonoBehaviour
@@ -14,7 +15,11 @@ public class CardView : MonoBehaviour
     
     [SerializeField] private TMP_Text desc;
 
+    [SerializeField] private LayerMask dropAreaLayer;
     public Card ThisCard { get; private set; }
+
+    private Vector3 dragStartPosition;
+    private Quaternion dragStartRotation;
     public void Setup(Card card)
     {
         ThisCard = card;
@@ -24,16 +29,52 @@ public class CardView : MonoBehaviour
         cardImage.sprite = card.Image;
     }
 
-    private void OnMouseEnter()
+    void OnMouseEnter()
     {
+        if (!InteractionSystem.Instance.PlayerCanHover()) return;
         wrapper.SetActive(false);
         Vector3 pos = new Vector3(this.transform.position.x, -2.0f, 0.0f);
         CardViewHoverSystem.Instance.ShowCard(ThisCard, pos);
     }
 
-    private void OnMouseExit()
+    void OnMouseExit()
     {
+        if (!InteractionSystem.Instance.PlayerCanHover()) return;
         CardViewHoverSystem.Instance.HideCard();
         wrapper.SetActive(true);
+    }
+
+    void OnMouseDown()
+    {
+        if (!InteractionSystem.Instance.PlayerCanInteract()) return;
+        InteractionSystem.Instance.PlayerIsDragging = true;
+        wrapper.SetActive(true);
+        CardViewHoverSystem.Instance.HideCard();
+        dragStartPosition = transform.position;
+        dragStartRotation = transform.rotation;
+        transform.rotation = Quaternion.Euler(0,0,0);
+        transform.position = MouseUtil.GetMousePositionInWorldSpace(-1);
+    }
+
+    void OnMouseDrag()
+    {
+        if (!InteractionSystem.Instance.PlayerCanInteract()) return;
+        transform.position = MouseUtil.GetMousePositionInWorldSpace(-1);
+    }
+
+    void OnMouseUp()
+    {
+        if (!InteractionSystem.Instance.PlayerCanInteract()) return;
+        if (Physics.Raycast(transform.position, Vector3.forward, out RaycastHit hit, 10f, dropAreaLayer))
+        {
+            PlayCardGA playCardGA = new(ThisCard);
+            ActionSystem.Instance.Perform(playCardGA);
+        }
+        else
+        {
+            transform.position = dragStartPosition;
+            transform.rotation = dragStartRotation;
+        }
+        InteractionSystem.Instance.PlayerIsDragging = false;
     }
 }

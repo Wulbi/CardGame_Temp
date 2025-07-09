@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
 
@@ -12,6 +13,8 @@ public class Card
     public string Desc => data.Desc;
     
     public readonly CardData data;
+    
+    public List<Effect> Effects => data.Effects;
 
     public Card(CardData cardData)
     {
