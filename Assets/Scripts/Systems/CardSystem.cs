@@ -79,6 +79,9 @@ public class CardSystem : Singleton<CardSystem>
         {
             yield return DiscardCard(cardView);
         }
+        
+        SpendManaGA spendManaGA = new(playCardGA.ThisCard.Mana);
+        ActionSystem.Instance.AddReaction(spendManaGA);
 
         foreach (var effect in playCardGA.ThisCard.Effects)
         {
