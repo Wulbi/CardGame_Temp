@@ -14,8 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Image>k__BackingField: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
   <Mana>k__BackingField: 1
+  <Money>k__BackingField: 1
+  <Charm>k__BackingField: 1
   <CardName>k__BackingField: Draw
   <Desc>k__BackingField: Draw 2 Cards
+  <CardType>k__BackingField: 1
   <Effects>k__BackingField:
   - rid: 7905451429847105536
   references:

@@ -13,9 +13,12 @@ MonoBehaviour:
   m_Name: Cold
   m_EditorClassIdentifier: 
   <Image>k__BackingField: {fileID: 21300000, guid: ef93c788f8761884c98675cb46c562f1, type: 3}
-  <Mana>k__BackingField: 2
+  <Mana>k__BackingField: 1
+  <Money>k__BackingField: 2
+  <Charm>k__BackingField: 2
   <CardName>k__BackingField: Cold
   <Desc>k__BackingField: Deal 4 SAN Damage
+  <CardType>k__BackingField: 0
   <Effects>k__BackingField:
   - rid: 7905451429847105538
   references:

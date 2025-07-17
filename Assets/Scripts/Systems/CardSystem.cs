@@ -79,9 +79,18 @@ public class CardSystem : Singleton<CardSystem>
         {
             yield return DiscardCard(cardView);
         }
+
+        if (playCardGA.ThisCard.CardType == CardType.ACTION)
+        {
+            SpendManaGA spendManaGA = new(playCardGA.ThisCard.Mana);
+            ActionSystem.Instance.AddReaction(spendManaGA);
+        }
         
-        SpendManaGA spendManaGA = new(playCardGA.ThisCard.Mana);
-        ActionSystem.Instance.AddReaction(spendManaGA);
+        CharmGA charmGA = new(playCardGA.ThisCard.Charm);
+        ActionSystem.Instance.AddReaction(charmGA);
+        
+        MoneyGA moneyGA = new(playCardGA.ThisCard.Money);
+        ActionSystem.Instance.AddReaction(moneyGA);
 
         foreach (var effect in playCardGA.ThisCard.Effects)
         {

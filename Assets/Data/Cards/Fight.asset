@@ -13,9 +13,12 @@ MonoBehaviour:
   m_Name: Fight
   m_EditorClassIdentifier: 
   <Image>k__BackingField: {fileID: 21300000, guid: 59ffc10097397b44dafa4e43fb959433, type: 3}
-  <Mana>k__BackingField: 2
+  <Mana>k__BackingField: 1
+  <Money>k__BackingField: 5
+  <Charm>k__BackingField: 5
   <CardName>k__BackingField: Fight
   <Desc>k__BackingField: Deal 4 Health Damage
+  <CardType>k__BackingField: 0
   <Effects>k__BackingField:
   - rid: 7905451429847105537
   references:

@@ -8,6 +8,11 @@ public class CardView : MonoBehaviour
     [SerializeField] private GameObject wrapper;
     
     [SerializeField] private TMP_Text mana;
+    [SerializeField] private CardType cardType;
+    
+    [SerializeField] private TMP_Text money;
+    
+    [SerializeField] private TMP_Text charm;
     
     [SerializeField] private SpriteRenderer cardImage;
     
@@ -23,9 +28,15 @@ public class CardView : MonoBehaviour
     public void Setup(Card card)
     {
         ThisCard = card;
+        cardType = card.CardType;
         cardName.text = card.CardName;
         desc.text = card.Desc;
-        mana.text = card.Mana.ToString();
+        if (cardType == CardType.ACTION)
+            mana.text = card.Mana.ToString();
+        else
+            mana.text = "M";
+        money.text = card.Money.ToString();
+        charm.text = card.Charm.ToString();
         cardImage.sprite = card.Image;
     }
 
