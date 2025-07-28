@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.XR;
 
 public class CardSystem : Singleton<CardSystem>
 {
@@ -12,6 +13,7 @@ public class CardSystem : Singleton<CardSystem>
     private readonly List<Card> drawPile = new();
     private readonly List<Card> discardPile = new();
     private readonly List<Card> hand = new();
+
 
     void OnEnable()
     {
@@ -47,7 +49,9 @@ public class CardSystem : Singleton<CardSystem>
         int notDrawnAmount = drawCardGA.Amount - actualAmount;
         for (int i = 0; i < actualAmount; i++)
         {
-            yield return DrawCard();
+            if (hand.Count >= 10)
+                break;
+            else yield return DrawCard();
         }
 
         if (notDrawnAmount > 0)
@@ -55,9 +59,12 @@ public class CardSystem : Singleton<CardSystem>
             RefillDeck();
             for (int i = 0; i < notDrawnAmount; i++)
             {
+                if (hand.Count >= 10)
+                    break;
                 yield return DrawCard();
             }
         }
+        LogCardListStates();
     }
 
     private IEnumerator DiscardAllCardsPerformer(DiscardAllCardsGA discardAllCardsGA)
@@ -77,6 +84,7 @@ public class CardSystem : Singleton<CardSystem>
         CardView cardView = handView.RemoveCard(playCardGA.ThisCard);
         if (cardView != null)
         {
+            discardPile.Add(playCardGA.ThisCard);
             yield return DiscardCard(cardView);
         }
 
@@ -110,14 +118,18 @@ public class CardSystem : Singleton<CardSystem>
     {
         DrawCardGA drawCardGA = new(5);
         ActionSystem.Instance.AddReaction(drawCardGA);
+        LogCardListStates();
     }
     
     private IEnumerator DrawCard()
     {
-        Card card = drawPile.Draw();
-        hand.Add(card);
-        CardView cardView = CardViewCreator.Instance.CreateCardView(card, drawPilePoint.position, drawPilePoint.rotation);
-        yield return handView.AddCard(cardView);
+        if (drawPile.Count != 0)
+        {
+            Card card = drawPile.Draw();
+            hand.Add(card);
+            CardView cardView = CardViewCreator.Instance.CreateCardView(card, drawPilePoint.position, drawPilePoint.rotation);
+            yield return handView.AddCard(cardView);
+        }
     }
 
     private void RefillDeck()
@@ -132,5 +144,13 @@ public class CardSystem : Singleton<CardSystem>
         Tween tween = cardView.transform.DOScale(Vector3.one, 0.15f);
         yield return tween.WaitForCompletion();
         Destroy(cardView.gameObject);
+        LogCardListStates();
+    }
+    
+    private void LogCardListStates()
+    {
+        Debug.Log("Draw Pile: " + string.Join(", ", drawPile.ConvertAll(card => card.CardName)));
+        Debug.Log("Discard Pile: " + string.Join(", ", discardPile.ConvertAll(card => card.CardName)));
+        Debug.Log("Hand: " + string.Join(", ", hand.ConvertAll(card => card.CardName)));
     }
 }

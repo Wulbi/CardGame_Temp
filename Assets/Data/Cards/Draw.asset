@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Draw
   m_EditorClassIdentifier: 
   <Image>k__BackingField: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  <Mana>k__BackingField: 1
+  <Mana>k__BackingField: 0
   <Money>k__BackingField: 1
   <Charm>k__BackingField: 1
   <CardName>k__BackingField: Draw
