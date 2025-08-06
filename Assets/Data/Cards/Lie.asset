@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59ecc336080a397488a5148f62299e8b, type: 3}
+  m_Name: Lie
+  m_EditorClassIdentifier: 
+  <Image>k__BackingField: {fileID: 21300000, guid: bc8832de32b1f304f83ea87ab8af8452, type: 3}
+  <Mana>k__BackingField: 0
+  <Money>k__BackingField: 0
+  <Charm>k__BackingField: -1
+  <CardName>k__BackingField: "\uAC70\uC9D3\uB9D0"
+  <Desc>k__BackingField: "\uB2E4\uC74C\uC5D0 \uC0AC\uC6A9\uD558\uB294 \uBE44\uC6A9\uC774
+    1\uC778 \uD589\uB3D9\uCE74\uB4DC\uC758 \uBE44\uC6A9\uC774 0\uC774 \uB429\uB2C8\uB2E4.
+    \uB371\uC5D0 \uAC70\uC9D3\uB9D0 \uCE74\uB4DC\uB97C 2\uC7A5 \uC11E\uC5B4 \uB123\uC2B5\uB2C8\uB2E4."
+  <CardType>k__BackingField: 1
+  <Effects>k__BackingField:
+  - rid: 262109423491350528
+  - rid: 262109423491350529
+  references:
+    version: 2
+    RefIds:
+    - rid: 262109423491350528
+      type: {class: LieEffect, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 262109423491350529
+      type: {class: AddCardsEffect, ns: , asm: Assembly-CSharp}
+      data:
+        targetCardData: {fileID: 11400000}

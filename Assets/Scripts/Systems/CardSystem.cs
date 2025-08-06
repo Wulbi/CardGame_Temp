@@ -13,13 +13,27 @@ public class CardSystem : Singleton<CardSystem>
     private readonly List<Card> drawPile = new();
     private readonly List<Card> discardPile = new();
     private readonly List<Card> hand = new();
-
-
+    
+    public List<Card> GetDrawPile() => drawPile;
+    public List<Card> GetDiscardPile() => discardPile;
+    public List<Card> GetHand() => hand;
+    
+    public List<Card> GetAllCards()
+    {
+        List<Card> allCards = new();
+        allCards.AddRange(drawPile);
+        allCards.AddRange(discardPile);
+        allCards.AddRange(hand);
+        return allCards;
+    }
+    
     void OnEnable()
     {
         ActionSystem.AttachPerformer<DrawCardGA>(DrawCardPerformer);
         ActionSystem.AttachPerformer<DiscardAllCardsGA>(DiscardAllCardsPerformer);
         ActionSystem.AttachPerformer<PlayCardGA>(PlayCardPerformer);
+        ActionSystem.AttachPerformer<AddCardsGA>(AddCardsPerformer);
+        ActionSystem.AttachPerformer<SearchCardGA>(SearchCardPerformer);
         ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE);
         ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
     }
@@ -29,6 +43,8 @@ public class CardSystem : Singleton<CardSystem>
         ActionSystem.DetachPerformer<DrawCardGA>();
         ActionSystem.DetachPerformer<DiscardAllCardsGA>();
         ActionSystem.DetachPerformer<PlayCardGA>();
+        ActionSystem.DetachPerformer<AddCardsGA>();
+        ActionSystem.DetachPerformer<SearchCardGA>();
         ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE);
         ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
     }
@@ -41,6 +57,8 @@ public class CardSystem : Singleton<CardSystem>
             Card card = new(cardData);
             drawPile.Add(card);
         }
+        
+        drawPile.Shuffle();
     }
     
     private IEnumerator DrawCardPerformer(DrawCardGA drawCardGA)
@@ -90,14 +108,14 @@ public class CardSystem : Singleton<CardSystem>
 
         if (playCardGA.ThisCard.CardType == CardType.ACTION)
         {
-            SpendManaGA spendManaGA = new(playCardGA.ThisCard.Mana);
+            SpendManaGA spendManaGA = new(playCardGA.ThisCard.currentMana);
             ActionSystem.Instance.AddReaction(spendManaGA);
         }
         
-        CharmGA charmGA = new(playCardGA.ThisCard.Charm);
+        CharmGA charmGA = new(playCardGA.ThisCard.currentCharm);
         ActionSystem.Instance.AddReaction(charmGA);
         
-        MoneyGA moneyGA = new(playCardGA.ThisCard.Money);
+        MoneyGA moneyGA = new(playCardGA.ThisCard.currentMoney);
         ActionSystem.Instance.AddReaction(moneyGA);
 
         foreach (var effect in playCardGA.ThisCard.Effects)
@@ -105,11 +123,73 @@ public class CardSystem : Singleton<CardSystem>
             PerformEffectGA performEffectGA = new(effect);
             ActionSystem.Instance.AddReaction(performEffectGA);
         }
+        
+        if (playCardGA.ThisCard.CardType == CardType.ACTION &&
+            playCardGA.ThisCard.Mana == 1 &&
+            CardCostModifierSystem.Instance.IsLieEffectOn())
+        {
+            CardCostModifierSystem.Instance.DisableLieEffect();
+        }
+    }
+    
+    private IEnumerator AddCardsPerformer(AddCardsGA ga)
+    {
+        Card newCard = new Card(ga.TargetCardData);
+        discardPile.Add(newCard);
+        LogCardListStates();
+        yield return null;
+    }
+    
+    private IEnumerator SearchCardPerformer(SearchCardGA ga)
+    {
+        if (drawPile.Count == 0)
+        {
+            RefillDeck();
+            //Debug.Log("[SearchCard] 덱이 비어 셔플을 실행합니다.");
+        }
+        
+        Card foundCard = null;
+
+        // 🔍 덱 앞에서부터 검색
+        foreach (var card in drawPile)
+        {
+            if (card.CardType == ga.typeofCard)
+            {
+                foundCard = card;
+                break;
+            }
+        }
+
+        if (foundCard != null)
+        {
+            if (hand.Count >= 10)
+            {
+                //Debug.Log("[SearchCard] 핸드가 가득 찼습니다. 카드 추가 불가.");
+            }
+            else
+            {
+                drawPile.Remove(foundCard);
+                hand.Add(foundCard);
+
+                CardView view = CardViewCreator.Instance.CreateCardView(foundCard, drawPilePoint.position, drawPilePoint.rotation);
+                yield return handView.AddCard(view);
+
+                LogCardListStates();
+            }
+        }
+        else
+        {
+            //Debug.Log($"[SearchCard] {ga.typeofCard} 타입 카드를 찾을 수 없음.");
+        }
+
+
+        yield return null;
     }
 
     //Reactions
     private void EnemyTurnPreReaction(EnemyTurnGA enemyTurnGA)
     {
+        ResetCards();
         DiscardAllCardsGA discardAllCardsGA = new();
         ActionSystem.Instance.AddReaction(discardAllCardsGA);
     }
@@ -136,6 +216,9 @@ public class CardSystem : Singleton<CardSystem>
     {
         drawPile.AddRange(discardPile);
         discardPile.Clear();
+        
+        drawPile.Shuffle(); 
+        //Debug.Log("[RefillDeck] 덱 셔플 완료.");
     }
 
     private IEnumerator DiscardCard(CardView cardView)
@@ -152,5 +235,15 @@ public class CardSystem : Singleton<CardSystem>
         Debug.Log("Draw Pile: " + string.Join(", ", drawPile.ConvertAll(card => card.CardName)));
         Debug.Log("Discard Pile: " + string.Join(", ", discardPile.ConvertAll(card => card.CardName)));
         Debug.Log("Hand: " + string.Join(", ", hand.ConvertAll(card => card.CardName)));
+    }
+
+    private void ResetCards()
+    {
+        foreach (var card in CardSystem.Instance.GetAllCards())
+        {
+            card.currentMana = card.Mana; 
+            card.currentMoney = card.Money;
+            card.currentCharm = card.Charm;
+        }
     }
 }

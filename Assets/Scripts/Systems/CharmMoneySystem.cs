@@ -9,17 +9,21 @@ public class CharmMoneySystem : Singleton<CharmMoneySystem>
     public int currentMoney;
     public TMP_Text Charm;
     public int currentCharm;
+
+    private int theftStack;
     
     void OnEnable()
     {
         ActionSystem.AttachPerformer<CharmGA>(CharmPerformer);
         ActionSystem.AttachPerformer<MoneyGA>(MoneyPerformer);
+        ActionSystem.AttachPerformer<TheftGA>(TheftEffectPerformer);
     }
 
     void OnDisable()
     {
         ActionSystem.DetachPerformer<CharmGA>();
         ActionSystem.DetachPerformer<MoneyGA>();
+        ActionSystem.DetachPerformer<TheftGA>();
     }
     
     private void Start()
@@ -31,20 +35,41 @@ public class CharmMoneySystem : Singleton<CharmMoneySystem>
     private IEnumerator CharmPerformer(CharmGA charmGA)
     {
         int gain = charmGA.Amount;
-        currentMoney += gain;
-        if(currentMoney <= 0)
-            currentMoney = 0;
-        Money.text = currentMoney.ToString();
+        currentCharm += gain; 
+        if(currentCharm <= 0)
+            currentCharm = 0;
+        Charm.text = currentCharm.ToString();
         yield return null;
     }
 
     private IEnumerator MoneyPerformer(MoneyGA moneyGA)
     {
         int gain = moneyGA.Amount;
-        currentCharm += gain;
-        if(currentCharm <= 0)
-            currentCharm = 0;
-        Charm.text = currentCharm.ToString();
+        currentMoney += gain;
+        if(currentMoney <= 0)
+            currentMoney = 0;
+        Money.text = currentMoney.ToString();
         yield return null;
     }
+    
+    private IEnumerator TheftEffectPerformer(TheftGA ga)
+    {
+        foreach (var card in CardSystem.Instance.GetAllCards())
+        {
+            if (card.CardName == "절도")
+            {
+                card.currentCharm *= 2;
+                card.currentMoney *= 2;
+                
+                CardView view = CardViewCreator.Instance.GetCardView(card);
+                if (view != null)
+                    view.Setup(card);
+
+                //Debug.Log($"[TheftBoost] 절도 카드 강화: Charm={card.currentCharm}, Money={card.currentMoney}");
+            }
+        }
+
+        yield return null;
+    }
+    
 }

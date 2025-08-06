@@ -32,11 +32,11 @@ public class CardView : MonoBehaviour
         cardName.text = card.CardName;
         desc.text = card.Desc;
         if (cardType == CardType.ACTION)
-            mana.text = card.Mana.ToString();
+            mana.text = card.currentMana.ToString();
         else
             mana.text = "M";
-        money.text = card.Money.ToString();
-        charm.text = card.Charm.ToString();
+        money.text = card.currentMoney.ToString();
+        charm.text = card.currentCharm.ToString();
         cardImage.sprite = card.Image;
     }
 
@@ -76,7 +76,7 @@ public class CardView : MonoBehaviour
     void OnMouseUp()
     {
         if (!InteractionSystem.Instance.PlayerCanInteract()) return;
-        if (ManaSystem.Instance.HasEnoughMana(ThisCard.Mana) 
+        if (ManaSystem.Instance.HasEnoughMana(ThisCard.currentMana) 
             && Physics.Raycast(transform.position, Vector3.forward, out RaycastHit hit, 10f, dropAreaLayer))
         {
             PlayCardGA playCardGA = new(ThisCard);
@@ -88,5 +88,13 @@ public class CardView : MonoBehaviour
             transform.rotation = dragStartRotation;
         }
         InteractionSystem.Instance.PlayerIsDragging = false;
+    }
+    
+    private void OnDestroy()
+    {
+        if (CardViewCreator.Instance != null && ThisCard != null)
+        {
+            CardViewCreator.Instance.RemoveCardView(ThisCard);
+        }
     }
 }
