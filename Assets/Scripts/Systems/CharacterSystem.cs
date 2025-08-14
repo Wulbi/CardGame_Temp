@@ -7,22 +7,22 @@ using UnityEngine.UI;
 public class CharacterSystem : Singleton<CharacterSystem>
 {
     public Sprite characterSprite;
-    public string characterName;
+    public string characterNameText;
     
-    public TMP_Text characterUIName;
-    public Image characterUIImage;
+    public TMP_Text characterName;
+    public SpriteRenderer characterImage;
 
     void OnEnable()
     {
-        characterName = "민재";
+        characterNameText = "민재";
         characterSprite = Resources.Load<Sprite>("Character/Minjae");
         Setup(); 
     }
     
     void Setup()
     {
-        characterUIName.text = characterName;
-        characterUIImage.sprite = characterSprite;
+        characterName.text = characterNameText;
+        characterImage.sprite = characterSprite;
 
     }
 }
