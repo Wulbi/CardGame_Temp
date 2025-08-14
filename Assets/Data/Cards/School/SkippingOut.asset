@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59ecc336080a397488a5148f62299e8b, type: 3}
+  m_Name: SkippingOut
+  m_EditorClassIdentifier: 
+  <Image>k__BackingField: {fileID: 21300000, guid: bc8832de32b1f304f83ea87ab8af8452, type: 3}
+  <Mana>k__BackingField: 0
+  <Money>k__BackingField: -1
+  <Charm>k__BackingField: -1
+  <CardName>k__BackingField: "\uBB34\uB2E8\uC870\uD1F4"
+  <Desc>k__BackingField: "\uD604\uC7AC \uC7A5\uC18C\uB97C \uAC70\uB9AC\uB85C \uBCC0\uACBD\uD569\uB2C8\uB2E4.
+    \uC190 \uD328\uB97C \uB2E4\uC2DC \uBF51\uC2B5\uB2C8\uB2E4."
+  <CardType>k__BackingField: 0
+  <Effects>k__BackingField:
+  - rid: 262109599222726657
+  references:
+    version: 2
+    RefIds:
+    - rid: 262109599222726657
+      type: {class: MapChangeEffect, ns: , asm: Assembly-CSharp}
+      data:
+        mapName: "\uAC70\uB9AC"
+        mapSprite: {fileID: 21300000, guid: e1d2f287dd631ca43a7c971c58906b09, type: 3}

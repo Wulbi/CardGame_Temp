@@ -7,6 +7,7 @@ public class CharmMoneySystem : Singleton<CharmMoneySystem>
 {
     public TMP_Text Money;
     public int currentMoney;
+    public int targetMoney;
     public TMP_Text Charm;
     public int currentCharm;
 
@@ -17,6 +18,7 @@ public class CharmMoneySystem : Singleton<CharmMoneySystem>
         ActionSystem.AttachPerformer<CharmGA>(CharmPerformer);
         ActionSystem.AttachPerformer<MoneyGA>(MoneyPerformer);
         ActionSystem.AttachPerformer<TheftGA>(TheftEffectPerformer);
+        targetMoney = 10;
     }
 
     void OnDisable()
