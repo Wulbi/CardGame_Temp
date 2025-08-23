@@ -34,6 +34,8 @@ public class CardSystem : Singleton<CardSystem>
         ActionSystem.AttachPerformer<PlayCardGA>(PlayCardPerformer);
         ActionSystem.AttachPerformer<AddCardsGA>(AddCardsPerformer);
         ActionSystem.AttachPerformer<SearchCardGA>(SearchCardPerformer);
+        ActionSystem.AttachPerformer<ClearDeckGA>(ClearDeckPerformer);
+        ActionSystem.AttachPerformer<SetDeckGA>(SetDeckPerformer);
         ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE);
         ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
     }
@@ -45,6 +47,8 @@ public class CardSystem : Singleton<CardSystem>
         ActionSystem.DetachPerformer<PlayCardGA>();
         ActionSystem.DetachPerformer<AddCardsGA>();
         ActionSystem.DetachPerformer<SearchCardGA>();
+        ActionSystem.DetachPerformer<ClearDeckGA>();
+        ActionSystem.DetachPerformer<SetDeckGA>();
         ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE);
         ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
     }
@@ -52,6 +56,11 @@ public class CardSystem : Singleton<CardSystem>
     
     public void Setup(List<CardData> deckData)
     {
+        drawPile.Clear();
+        discardPile.Clear();
+        handView.ClearAllCards();
+        hand.Clear();
+        
         foreach (var cardData in deckData)
         {
             Card card = new(cardData);
@@ -91,7 +100,10 @@ public class CardSystem : Singleton<CardSystem>
         {
             discardPile.Add(card);
             CardView cardView = handView.RemoveCard(card);
-            yield return DiscardCard(cardView);
+            if (cardView != null)
+            {
+                yield return DiscardCard(cardView);
+            }
         }
         hand.Clear();
     }
@@ -185,6 +197,30 @@ public class CardSystem : Singleton<CardSystem>
 
         yield return null;
     }
+    
+    private IEnumerator ClearDeckPerformer(ClearDeckGA ga)
+    {
+        drawPile.Clear();
+        discardPile.Clear();
+        hand.Clear();
+        handView.ClearAllCards(); 
+
+        yield return null;
+    }
+    
+    private IEnumerator SetDeckPerformer(SetDeckGA ga)
+    {
+        drawPile.Clear(); 
+        foreach (var cardData in ga.NewDeckData)
+        {
+            Card card = new Card(cardData);
+            drawPile.Add(card);
+        }
+
+        drawPile.Shuffle(); 
+        LogCardListStates();
+        yield return null;
+    }
 
     //Reactions
     private void EnemyTurnPreReaction(EnemyTurnGA enemyTurnGA)
@@ -237,7 +273,7 @@ public class CardSystem : Singleton<CardSystem>
         Debug.Log("Hand: " + string.Join(", ", hand.ConvertAll(card => card.CardName)));
     }
 
-    private void ResetCards()
+    public void ResetCards()
     {
         foreach (var card in CardSystem.Instance.GetAllCards())
         {
@@ -245,5 +281,8 @@ public class CardSystem : Singleton<CardSystem>
             card.currentMoney = card.Money;
             card.currentCharm = card.Charm;
         }
+        
+        LogCardListStates();
     }
+    
 }

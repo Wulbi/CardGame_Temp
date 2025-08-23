@@ -17,6 +17,12 @@ public class EffectSystem : MonoBehaviour
 
     private IEnumerator PerformEffectPerformer(PerformEffectGA performEffectGA)
     {
+        if (performEffectGA.Effect == null)
+        {
+            Debug.LogWarning("[EffectSystem] Null Effect passed to PerformEffectPerformer.");
+            yield break;
+        }
+
         GameAction effectAction = performEffectGA.Effect.GetGameAction();
         ActionSystem.Instance.AddReaction(effectAction);
         yield return null;

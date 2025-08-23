@@ -49,4 +49,13 @@ public class HandView : MonoBehaviour
         }
         yield return new WaitForSeconds(duration);
     }
+    
+    public void ClearAllCards()
+    {
+        foreach (var cardView in cards)
+        {
+            Destroy(cardView.gameObject);
+        }
+        cards.Clear();
+    }
 }

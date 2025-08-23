@@ -4,17 +4,16 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BackgroundSystem : MonoBehaviour
+public class BackgroundSystem : Singleton<BackgroundSystem>
 {
     public Sprite bgSprite;
-    public string bgName;
+    public MapType bgName;
     
     public SpriteRenderer bgImage;
 
     void OnEnable()
     {
-        bgName = "교실";
-        bgSprite = Resources.Load<Sprite>("Background/Classroom");
+        bgName = MapType.CLASSROOM;
         ActionSystem.AttachPerformer<MapChangeGA>(MapChangePerformer);
         Setup(); 
     }
@@ -25,14 +24,35 @@ public class BackgroundSystem : MonoBehaviour
     }
     void Setup()
     {
+        if (bgName == MapType.CLASSROOM)
+        {
+            bgSprite = Resources.Load<Sprite>("Background/Classroom");
+        }
+        else if (bgName == MapType.STREET)
+        {
+            bgSprite = Resources.Load<Sprite>("Background/Street");
+        }
+        else if (bgName == MapType.ROOM)
+        {
+            bgSprite = Resources.Load<Sprite>("Background/Room");
+        }
+        else if (bgName == MapType.THERAPY)
+        {
+            bgSprite = Resources.Load<Sprite>("Background/Therapy");
+        }
         bgImage.sprite = bgSprite;
     }
 
     private IEnumerator MapChangePerformer(MapChangeGA ga)
     {
         bgName = ga.MapName;
-        bgSprite = ga.MapSprite;
         Setup();
+
+        ActionSystem.Instance.AddReaction(new DiscardAllCardsGA());
+        ActionSystem.Instance.AddReaction(new ClearDeckGA());
+        ActionSystem.Instance.AddReaction(MatchSetupSystem.Instance.GetDeckSetupGA());
+        ActionSystem.Instance.AddReaction(new DrawCardGA(5));
+
 
         yield return null;
     }

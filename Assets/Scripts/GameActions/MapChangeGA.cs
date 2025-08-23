@@ -4,13 +4,11 @@ using UnityEngine;
 
 public class MapChangeGA : GameAction
 {
-    public string MapName;
-    public Sprite MapSprite;
+    public MapType MapName;
 
-    public MapChangeGA(string name, Sprite sprite)
+    public MapChangeGA(MapType mapType)
     {
-        MapName = name;
-        MapSprite = sprite;
+        MapName = mapType;
     }
 
 }

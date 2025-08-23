@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class MapChangeEffect : Effect
 {
-    [SerializeField] private string mapName;
-    [SerializeField] private Sprite mapSprite;
+    [SerializeField] private MapType mapName;
     
     public override GameAction GetGameAction()
     {
-        return new MapChangeGA(mapName, mapSprite);
+        return new MapChangeGA(mapName);
     }
 }

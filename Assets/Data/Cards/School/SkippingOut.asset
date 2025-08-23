@@ -28,5 +28,4 @@ MonoBehaviour:
     - rid: 262109599222726657
       type: {class: MapChangeEffect, ns: , asm: Assembly-CSharp}
       data:
-        mapName: "\uAC70\uB9AC"
-        mapSprite: {fileID: 21300000, guid: e1d2f287dd631ca43a7c971c58906b09, type: 3}
+        mapName: 1
