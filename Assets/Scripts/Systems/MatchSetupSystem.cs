@@ -30,7 +30,7 @@ public class MatchSetupSystem : Singleton<MatchSetupSystem>
         mergedDeckData.Clear();
     
         mergedDeckData.AddRange(deckData);
-        if (BackgroundSystem.Instance.bgName == MapType.CLASSROOM)
+        if (BackgroundSystem.Instance.bgName == MapType.CLASSROOM1 || BackgroundSystem.Instance.bgName == MapType.CLASSROOM2)
             mergedDeckData.AddRange(deckDataClassroom);
         else if (BackgroundSystem.Instance.bgName == MapType.STREET)
             mergedDeckData.AddRange(deckDataStreet);
