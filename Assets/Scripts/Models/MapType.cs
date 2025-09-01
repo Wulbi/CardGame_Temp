@@ -4,8 +4,10 @@ using UnityEngine;
 
 public enum MapType
 {
-    CLASSROOM,
+    CLASSROOM1,
+    CLASSROOM2,
     STREET,
     ROOM,
-    THERAPY
+    THERAPY,
+    DREAM
 }

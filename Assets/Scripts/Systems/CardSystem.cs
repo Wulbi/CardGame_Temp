@@ -49,8 +49,8 @@ public class CardSystem : Singleton<CardSystem>
         ActionSystem.DetachPerformer<SearchCardGA>();
         ActionSystem.DetachPerformer<ClearDeckGA>();
         ActionSystem.DetachPerformer<SetDeckGA>();
-        ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE);
-        ActionSystem.SubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
+        ActionSystem.UnSubscribeReaction<EnemyTurnGA>(EnemyTurnPreReaction, ReactionTiming.PRE);
+        ActionSystem.UnSubscribeReaction<EnemyTurnGA>(EnemyTurnPostReaction, ReactionTiming.POST);
     }
     
     
@@ -226,14 +226,14 @@ public class CardSystem : Singleton<CardSystem>
     private void EnemyTurnPreReaction(EnemyTurnGA enemyTurnGA)
     {
         ResetCards();
-        DiscardAllCardsGA discardAllCardsGA = new();
-        ActionSystem.Instance.AddReaction(discardAllCardsGA);
+        //DiscardAllCardsGA discardAllCardsGA = new();
+        //ActionSystem.Instance.AddReaction(discardAllCardsGA);
     }
     
     private void EnemyTurnPostReaction(EnemyTurnGA enemyTurnGA)
     {
-        DrawCardGA drawCardGA = new(5);
-        ActionSystem.Instance.AddReaction(drawCardGA);
+        //DrawCardGA drawCardGA = new(5);
+        //ActionSystem.Instance.AddReaction(drawCardGA);
         LogCardListStates();
     }
     
