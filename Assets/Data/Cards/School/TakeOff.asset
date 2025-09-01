@@ -28,4 +28,4 @@ MonoBehaviour:
     - rid: 262109599222726656
       type: {class: MapChangeEffect, ns: , asm: Assembly-CSharp}
       data:
-        mapName: 2
+        mapName: 3
