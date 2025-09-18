@@ -13,6 +13,9 @@ public class CardData : ScriptableObject
     [field: SerializeField] public string Desc { get; private set; }
     [field: SerializeField] public CardType CardType { get; private set; }
     
+    [field: SerializeField] public CardMapType CardMapType { get; private set; }
     [field: SerializeReference, SR] public List<Effect> Effects { get; private set; }
+    
+    
     
 }

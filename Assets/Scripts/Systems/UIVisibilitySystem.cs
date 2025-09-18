@@ -5,7 +5,13 @@ public class UIVisibilitySystem : MonoBehaviour
 {
     public List<GameObject> combatOnlyObjects = new();
     
+    public List<GameObject> dreamOnlyObjects = new();
+    
+    public List<GameObject> therapyOnlyObjects = new();
+    
     private bool awaitingVisibilityByDiscard = false;
+    
+    
 
     void OnEnable()
     {
@@ -24,6 +30,8 @@ public class UIVisibilitySystem : MonoBehaviour
         ActionSystem.UnSubscribeReaction<MapChangeGA>(OnMapChangePre, ReactionTiming.PRE);
         ActionSystem.UnSubscribeReaction<DiscardAllCardsGA>(OnDiscardAllCardsPost, ReactionTiming.POST);
         ActionSystem.UnSubscribeReaction<MapChangeGA>(OnMapChangePostFallback, ReactionTiming.POST);
+        
+        awaitingVisibilityByDiscard = false;
     }
     
     private void OnMapChangePre(MapChangeGA ga)
@@ -37,13 +45,13 @@ public class UIVisibilitySystem : MonoBehaviour
 
         var map = (BackgroundSystem.Instance != null) ? BackgroundSystem.Instance.bgName : MapType.CLASSROOM1;
         ApplyVisibility(map);
-
         awaitingVisibilityByDiscard = false; 
     }
     
     private void OnMapChangePostFallback(MapChangeGA ga)
     {
         if (!awaitingVisibilityByDiscard) return;
+        
         ApplyVisibility(ga.MapName);
         awaitingVisibilityByDiscard = false;
     }
@@ -51,9 +59,21 @@ public class UIVisibilitySystem : MonoBehaviour
     private void ApplyVisibility(MapType map)
     {
         bool isCombat = BackgroundSystem.IsCombatMap(map);
-        foreach (var go in combatOnlyObjects)
+        bool isDream  = (map == MapType.DREAM);
+        bool isTherapy = (map == MapType.THERAPY);
+        
+        SetActiveList(combatOnlyObjects,  isCombat);
+        SetActiveList(dreamOnlyObjects,   isDream);
+        SetActiveList(therapyOnlyObjects, isTherapy);
+    }
+
+    private static void SetActiveList(List<GameObject> list, bool active)
+    {
+        if (list == null) return;
+        for (int i = 0; i < list.Count; i++)
         {
-            if (go != null) go.SetActive(isCombat);
+            var go = list[i];
+            if (go) go.SetActive(active);
         }
     }
 }
