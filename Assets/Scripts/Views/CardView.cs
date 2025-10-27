@@ -32,7 +32,7 @@ public class CardView : MonoBehaviour
         cardName.text = card.CardName;
         desc.text = card.Desc;
         if (cardType == CardType.ACTION)
-            mana.text = card.currentMana.ToString();
+            mana.text = card.currentMana.ToString() + "h";
         else
             mana.text = "M";
         money.text = card.currentMoney.ToString();

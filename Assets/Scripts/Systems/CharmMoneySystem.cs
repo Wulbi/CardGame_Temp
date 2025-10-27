@@ -10,8 +10,6 @@ public class CharmMoneySystem : Singleton<CharmMoneySystem>
     public int targetMoney;
     public TMP_Text Charm;
     public int currentCharm;
-
-    private int theftStack;
     
     void OnEnable()
     {
@@ -60,8 +58,9 @@ public class CharmMoneySystem : Singleton<CharmMoneySystem>
         {
             if (card.CardName == "절도")
             {
-                card.currentCharm *= 2;
-                card.currentMoney *= 2;
+                card.CharmMultiplier *= 2;
+                card.MoneyMultiplier *= 2;
+                card.RecomputeCurrent(); 
                 
                 CardView view = CardViewCreator.Instance.GetCardView(card);
                 if (view != null)

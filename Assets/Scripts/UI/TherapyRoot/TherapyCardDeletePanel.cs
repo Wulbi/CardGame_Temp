@@ -32,6 +32,13 @@ public class TherapyCardDeletePanel : MonoBehaviour
         public CardMapType map;
     }
 
+    void Awake() {
+        Debug.Log($"[TherapyDeletePanel] Awake: {name}({GetInstanceID()}) performEnemyTurnAfterDelete={performEnemyTurnAfterDelete}");
+    }
+    void OnEnable() {
+        Debug.Log($"[TherapyDeletePanel] OnEnable: {name}({GetInstanceID()}) performEnemyTurnAfterDelete={performEnemyTurnAfterDelete}");
+    }
+    
     public void Open(Action onClosed = null)
     {
         gameObject.SetActive(true);
@@ -221,12 +228,16 @@ public class TherapyCardDeletePanel : MonoBehaviour
             case CardMapType.ROOM:
                 RemoveFrom(GetListSafe(ms, "deckDataRoom"));
                 break;
+            case CardMapType.CLASSROOMROOM:
+                RemoveFrom(GetListSafe(ms, "deckDataClassroomRoom"));
+                break;
+            case CardMapType.CLASSROOMSTREET:
+                RemoveFrom(GetListSafe(ms, "deckDataClassroomStreet"));
+                break;
+            case CardMapType.STREETROOM:
+                RemoveFrom(GetListSafe(ms, "deckDataStreetRoom"));
+                break;
             default:
-                // 복합 타입 등은 모든 리스트에서 시도
-                RemoveFrom(GetListSafe(ms, "deckData"));
-                RemoveFrom(GetListSafe(ms, "deckDataClassroom"));
-                RemoveFrom(GetListSafe(ms, "deckDataStreet"));
-                RemoveFrom(GetListSafe(ms, "deckDataRoom"));
                 break;
         }
 

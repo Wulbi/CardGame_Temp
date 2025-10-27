@@ -276,12 +276,8 @@ public class CardSystem : Singleton<CardSystem>
     public void ResetCards()
     {
         foreach (var card in CardSystem.Instance.GetAllCards())
-        {
-            card.currentMana = card.Mana; 
-            card.currentMoney = card.Money;
-            card.currentCharm = card.Charm;
-        }
-        
+            card.ResetRuntime();
+
         LogCardListStates();
     }
     

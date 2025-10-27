@@ -33,7 +33,7 @@ public class CardButton : MonoBehaviour
         cardName.text = card.CardName;
         desc.text = card.Desc;
 
-        mana.text = (cardType == CardType.ACTION) ? card.currentMana.ToString() : "M";
+        mana.text = (cardType == CardType.ACTION) ? card.currentMana.ToString() + "h" : "M";
         money.text = card.currentMoney.ToString();
         charm.text = card.currentCharm.ToString();
 
@@ -73,26 +73,31 @@ public class CardButton : MonoBehaviour
 
     void OnMouseUp()
     {
+        if (InteractionSystem.Instance != null)
+            InteractionSystem.Instance.PlayerIsDragging = false;
+
         if (!InteractionSystem.Instance.PlayerCanInteract()) return;
-        
-        // 🔹 TherapyCardAddPanel에서 외부 콜백으로만 처리하는 경우
+
+        // Therapy 전용: 외부 콜백이 있으면 그쪽에서 등록/턴진행 처리
         if (OnClickedExternally != null)
         {
             OnClickedExternally.Invoke(this);
-            return; // EnemyTurnGA 같은 Dream 전투용 처리 안 함
+            return; 
         }
-        
-        // 🔹 DREAM 선택: CardData를 맵 타입에 맞게 MatchSetupSystem에 등록
+
+        // Dream 기본 경로: 안전하게 맵타입 보강 후 등록
         if (SourceData != null)
         {
-            MatchSetupSystem.Instance.RegisterCardForMap(SourceData, cardMapType);
+            var map = GetMapTypeOrDefault(CardMapType.COMMON); 
+            MatchSetupSystem.Instance.RegisterCardForMap(SourceData, map);
+            Debug.Log($"[CardButton] Register {SourceData?.name} to {GetMapTypeOrDefault(CardMapType.COMMON)}");
         }
         else
         {
             Debug.LogWarning("[CardButton] SourceData is null. Did you pass CardData when creating the button?");
         }
 
-        // 기존 흐름 유지: 적 턴 시작(맵 전환 포함)
+        // 기존 흐름 유지
         ActionSystem.Instance.Perform(new EnemyTurnGA());
     }
 

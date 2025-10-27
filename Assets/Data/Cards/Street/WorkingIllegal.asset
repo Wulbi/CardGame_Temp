@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59ecc336080a397488a5148f62299e8b, type: 3}
+  m_Name: WorkingIllegal
+  m_EditorClassIdentifier: 
+  <Image>k__BackingField: {fileID: 21300000, guid: c5a906ae562053f4dbe6955af4f75da1, type: 3}
+  <Mana>k__BackingField: 3
+  <Money>k__BackingField: 20
+  <Charm>k__BackingField: -10
+  <CardName>k__BackingField: "\uBD88\uBC95\uC54C\uBC14"
+  <Desc>k__BackingField: "\uBAB0\uB798 \uCCB4\uB825\uC744 20 \uC18C\uBAA8\uD558\uC5EC
+    \uC218\uC0C1\uD558\uAC8C \uB3C8\uC744 \uBC95\uB2C8\uB2E4"
+  <CardType>k__BackingField: 0
+  <CardMapType>k__BackingField: 2
+  <Effects>k__BackingField:
+  - rid: 5696320633610698752
+  - rid: 5696320633610698753
+  references:
+    version: 2
+    RefIds:
+    - rid: 5696320633610698752
+      type: {class: HealthDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        healthDamage: 5
+    - rid: 5696320633610698753
+      type: {class: SANDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        sanDamage: 5

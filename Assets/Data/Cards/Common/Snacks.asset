@@ -12,13 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59ecc336080a397488a5148f62299e8b, type: 3}
   m_Name: Snacks
   m_EditorClassIdentifier: 
-  <Image>k__BackingField: {fileID: 21300000, guid: ef93c788f8761884c98675cb46c562f1, type: 3}
+  <Image>k__BackingField: {fileID: 21300000, guid: 22452a49659a5204a992e3ee7366682d, type: 3}
   <Mana>k__BackingField: 0
   <Money>k__BackingField: -1
   <Charm>k__BackingField: 1
   <CardName>k__BackingField: "\uAD70\uAC83\uC9C8"
   <Desc>k__BackingField: "\uBA58\uD0C8\uC744 1 \uD68C\uBCF5\uD569\uB2C8\uB2E4"
   <CardType>k__BackingField: 1
+  <CardMapType>k__BackingField: 0
   <Effects>k__BackingField:
   - rid: 262109399184572416
   references:

@@ -8,6 +8,8 @@ public class UIVisibilitySystem : MonoBehaviour
     public List<GameObject> dreamOnlyObjects = new();
     
     public List<GameObject> therapyOnlyObjects = new();
+
+    public GameObject cardViewHover = null;
     
     private bool awaitingVisibilityByDiscard = false;
     
@@ -37,15 +39,18 @@ public class UIVisibilitySystem : MonoBehaviour
     private void OnMapChangePre(MapChangeGA ga)
     {
         awaitingVisibilityByDiscard = true;
+        
     }
     
     private void OnDiscardAllCardsPost(DiscardAllCardsGA _)
     {
+        if (cardViewHover) cardViewHover.SetActive(false);
         if (!awaitingVisibilityByDiscard) return; 
 
         var map = (BackgroundSystem.Instance != null) ? BackgroundSystem.Instance.bgName : MapType.CLASSROOM1;
         ApplyVisibility(map);
         awaitingVisibilityByDiscard = false; 
+        
     }
     
     private void OnMapChangePostFallback(MapChangeGA ga)

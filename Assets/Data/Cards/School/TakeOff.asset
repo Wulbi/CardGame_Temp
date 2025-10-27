@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59ecc336080a397488a5148f62299e8b, type: 3}
   m_Name: TakeOff
   m_EditorClassIdentifier: 
-  <Image>k__BackingField: {fileID: 21300000, guid: bc8832de32b1f304f83ea87ab8af8452, type: 3}
+  <Image>k__BackingField: {fileID: 21300000, guid: 3a236dbc90e0aac4f9effa0d1e0d7f9e, type: 3}
   <Mana>k__BackingField: 0
   <Money>k__BackingField: -1
   <Charm>k__BackingField: -1

@@ -9,6 +9,9 @@ public class MatchSetupSystem : Singleton<MatchSetupSystem>
     [SerializeField] private List<CardData> deckDataClassroom;
     [SerializeField] private List<CardData> deckDataStreet;
     [SerializeField] private List<CardData> deckDataRoom;
+    [SerializeField] private List<CardData> deckDataClassroomStreet;
+    [SerializeField] private List<CardData> deckDataClassroomRoom;
+    [SerializeField] private List<CardData> deckDataStreetRoom;
     
     private List<CardData> mergedDeckData = new();
 
@@ -16,6 +19,8 @@ public class MatchSetupSystem : Singleton<MatchSetupSystem>
     {
         mergedDeckData.AddRange(deckData);
         mergedDeckData.AddRange(deckDataClassroom);
+        mergedDeckData.AddRange(deckDataClassroomStreet);
+        mergedDeckData.AddRange(deckDataClassroomRoom);
         CardSystem.Instance.Setup(mergedDeckData);
         RefillManaGA refillManaGA = new();
         ActionSystem.Instance.Perform(refillManaGA, () =>
@@ -30,13 +35,25 @@ public class MatchSetupSystem : Singleton<MatchSetupSystem>
         mergedDeckData.Clear();
     
         mergedDeckData.AddRange(deckData);
-        if (BackgroundSystem.Instance.bgName == MapType.CLASSROOM1 || BackgroundSystem.Instance.bgName == MapType.CLASSROOM2)
+        if (BackgroundSystem.Instance.bgName == MapType.CLASSROOM1 ||
+            BackgroundSystem.Instance.bgName == MapType.CLASSROOM2)
+        {
             mergedDeckData.AddRange(deckDataClassroom);
+            mergedDeckData.AddRange(deckDataClassroomStreet);
+            mergedDeckData.AddRange(deckDataClassroomRoom);
+        }
         else if (BackgroundSystem.Instance.bgName == MapType.STREET)
+        {
             mergedDeckData.AddRange(deckDataStreet);
+            mergedDeckData.AddRange(deckDataClassroomStreet);
+            mergedDeckData.AddRange(deckDataStreetRoom);
+        }
         else if (BackgroundSystem.Instance.bgName == MapType.ROOM)
+        {
             mergedDeckData.AddRange(deckDataRoom);
-
+            mergedDeckData.AddRange(deckDataClassroomRoom);
+            mergedDeckData.AddRange(deckDataStreetRoom);
+        }
         return new SetDeckGA(mergedDeckData);
     }
     
@@ -46,26 +63,19 @@ public class MatchSetupSystem : Singleton<MatchSetupSystem>
         switch (map)
         {
             case CardMapType.COMMON:
-                AddUnique(deckData, data); break;
+                AddCardData(deckData, data); break;
             case CardMapType.CLASSROOM:
-                AddUnique(deckDataClassroom, data); break;
+                AddCardData(deckDataClassroom, data); break;
             case CardMapType.STREET:
-                AddUnique(deckDataStreet, data); break;
+                AddCardData(deckDataStreet, data); break;
             case CardMapType.ROOM:
-                AddUnique(deckDataRoom, data); break;
-
+                AddCardData(deckDataRoom, data); break;
             case CardMapType.CLASSROOMSTREET:
-                AddUnique(deckDataClassroom, data);
-                AddUnique(deckDataStreet, data);
-                break;
+                AddCardData(deckDataClassroomStreet, data); break;
             case CardMapType.CLASSROOMROOM:
-                AddUnique(deckDataClassroom, data);
-                AddUnique(deckDataRoom, data);
-                break;
+                AddCardData(deckDataClassroomRoom, data); break;
             case CardMapType.STREETROOM:
-                AddUnique(deckDataStreet, data);
-                AddUnique(deckDataRoom, data);
-                break;
+                AddCardData(deckDataStreetRoom, data); break;
         }
         Debug.Log($"[MatchSetupSystem] Registered {data.name} -> {map}");
     }
@@ -85,20 +95,12 @@ public class MatchSetupSystem : Singleton<MatchSetupSystem>
                 removed |= deckDataStreet.Remove(data); break;
             case CardMapType.ROOM:
                 removed |= deckDataRoom.Remove(data); break;
-
-            // 복합 타입은 양쪽에서 제거
             case CardMapType.CLASSROOMSTREET:
-                removed |= deckDataClassroom.Remove(data);
-                removed |= deckDataStreet.Remove(data);
-                break;
+                removed |= deckDataClassroomStreet.Remove(data); break;
             case CardMapType.CLASSROOMROOM:
-                removed |= deckDataClassroom.Remove(data);
-                removed |= deckDataRoom.Remove(data);
-                break;
+                removed |= deckDataClassroomRoom.Remove(data); break;
             case CardMapType.STREETROOM:
-                removed |= deckDataStreet.Remove(data);
-                removed |= deckDataRoom.Remove(data);
-                break;
+                removed |= deckDataStreetRoom.Remove(data); break;
         }
         if (removed) Debug.Log($"[MatchSetupSystem] Unregistered {data.name} <- {map}");
         return removed;
@@ -111,11 +113,14 @@ public class MatchSetupSystem : Singleton<MatchSetupSystem>
         foreach (var cd in deckDataClassroom) if (cd) yield return (cd, CardMapType.CLASSROOM);
         foreach (var cd in deckDataStreet)    if (cd) yield return (cd, CardMapType.STREET);
         foreach (var cd in deckDataRoom)      if (cd) yield return (cd, CardMapType.ROOM);
+        foreach (var cd in deckDataClassroomRoom)      if (cd) yield return (cd, CardMapType.CLASSROOMROOM);
+        foreach (var cd in deckDataClassroomStreet)      if (cd) yield return (cd, CardMapType.CLASSROOMSTREET);
+        foreach (var cd in deckDataStreetRoom)      if (cd) yield return (cd, CardMapType.STREETROOM);
     }
 
-    private void AddUnique(List<CardData> list, CardData data)
+    private void AddCardData(List<CardData> list, CardData data)
     {
-        if (!list.Contains(data)) list.Add(data);
+        list.Add(data);
     }
 
 }

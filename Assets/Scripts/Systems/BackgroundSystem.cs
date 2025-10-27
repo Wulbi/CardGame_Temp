@@ -44,7 +44,11 @@ public class BackgroundSystem : Singleton<BackgroundSystem>
         {
             bgSprite = Resources.Load<Sprite>("Background/Room");
         }
-        else if (bgName == MapType.THERAPY || bgName == MapType.DREAM)
+        else if (bgName == MapType.DREAM)
+        {
+            bgSprite = Resources.Load<Sprite>("Background/Dream");
+        }
+        else if (bgName == MapType.THERAPY)
         {
             bgSprite = Resources.Load<Sprite>("Background/Therapy");
         }

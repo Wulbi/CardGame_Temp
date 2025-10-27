@@ -8,7 +8,7 @@ public class CardViewHoverSystem : Singleton<CardViewHoverSystem>
    {
       cardViewHover.gameObject.SetActive(true);
       cardViewHover.Setup(card);
-      cardViewHover.transform.position = position;
+      cardViewHover.transform.position = position + Vector3.up;
    }
 
    public void HideCard()

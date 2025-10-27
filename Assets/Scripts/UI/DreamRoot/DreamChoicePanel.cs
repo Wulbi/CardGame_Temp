@@ -27,6 +27,7 @@ public class DreamChoicePanel : MonoBehaviour
     // 시각화를 위한 임시 Card 보관
     private readonly List<Card> _tempCards = new();
 
+    
     void OnEnable()
     {
         ActionSystem.SubscribeReaction<MapChangeGA>(OnMapChangePost, ReactionTiming.POST);
@@ -87,7 +88,7 @@ public class DreamChoicePanel : MonoBehaviour
             var btn = CardButtonCreator.Instance.GetCardButton(c);
             if (btn != null) Destroy(btn.gameObject);
             CardButtonCreator.Instance.RemoveCardButton(c);
-        }
+        }   
         _tempCards.Clear();
     }
 

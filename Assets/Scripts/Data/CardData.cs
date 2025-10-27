@@ -7,8 +7,11 @@ public class CardData : ScriptableObject
 {
     [field: SerializeField] public Sprite Image { get; private set; }
     [field: SerializeField] public int Mana { get; private set; }
+    public int ManaMultiplier { get; private set; } = 1;
     [field: SerializeField] public int Money { get; private set; }
+    public int MoneyMultiplier { get; private set; } = 1;
     [field: SerializeField] public int Charm { get; private set; }
+    public int CharmMultiplier { get; private set; } = 1;
     [field: SerializeField] public string CardName { get; private set; }
     [field: SerializeField] public string Desc { get; private set; }
     [field: SerializeField] public CardType CardType { get; private set; }

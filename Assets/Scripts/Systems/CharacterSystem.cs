@@ -15,7 +15,7 @@ public class CharacterSystem : Singleton<CharacterSystem>
     void OnEnable()
     {
         characterNameText = "민재";
-        characterSprite = Resources.Load<Sprite>("Character/Minjae");
+        characterSprite = Resources.Load<Sprite>("Character/Minjae1");
         Setup(); 
     }
     
