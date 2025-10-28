@@ -10,23 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 59ecc336080a397488a5148f62299e8b, type: 3}
-  m_Name: PCBang
+  m_Name: Karaoke
   m_EditorClassIdentifier: 
-  <Image>k__BackingField: {fileID: 21300000, guid: 00f513d4028f15e408f89d5833a242fb, type: 3}
+  <Image>k__BackingField: {fileID: 21300000, guid: 5208a6e73f321f44ea776ebb2a733488, type: 3}
   <Mana>k__BackingField: 1
-  <Money>k__BackingField: 3
+  <Money>k__BackingField: 2
   <Charm>k__BackingField: 0
-  <CardName>k__BackingField: "PC\uBC29"
+  <CardName>k__BackingField: "\uB178\uB798\uBC29"
   <Desc>k__BackingField: "\uB0A8\uC740 \uC2DC\uAC04\uC744 \uC804\uBD80 \uC18C\uBAA8\uD569\uB2C8\uB2E4.
     \uB0A8\uC740 \uC2DC\uAC04\uC5D0 \uBE44\uB840\uD558\uC5EC \uBA58\uD0C8\uC744 \uD68C\uBCF5\uD569\uB2C8\uB2E4"
   <CardType>k__BackingField: 0
   <CardMapType>k__BackingField: 2
   <Effects>k__BackingField:
-  - rid: 5696320782598668304
+  - rid: 5696320782598668303
   references:
     version: 2
     RefIds:
-    - rid: 5696320782598668304
+    - rid: 5696320782598668303
       type: {class: multiMentalEffect, ns: , asm: Assembly-CSharp}
       data:
-        multiplier: 4
+        multiplier: 3

@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/TCGScene.unity
+    guid: 549715c7fe230fe44b61c85e1b9a0ce0
   m_configObjects: {}

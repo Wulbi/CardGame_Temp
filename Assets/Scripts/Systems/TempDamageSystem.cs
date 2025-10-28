@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using UnityEngine.UI;
 
 public class TempDamageSystem : Singleton<TempDamageSystem>
@@ -16,18 +17,19 @@ public class TempDamageSystem : Singleton<TempDamageSystem>
     {
         ActionSystem.AttachPerformer<HealthDamageGA>(HealthDamagePerformer);
         ActionSystem.AttachPerformer<SANDamageGA>(SANDamagePerformer);
+        ActionSystem.AttachPerformer<multiMentalGA>(mmPerformer);
     }
 
     void OnDisable()
     {
         ActionSystem.DetachPerformer<HealthDamageGA>();
         ActionSystem.DetachPerformer<SANDamageGA>();
+        ActionSystem.DetachPerformer<multiMentalGA>();
     }
 
     private void Start()
     {
-        HP.text = currentHP.ToString();
-        SAN.text = currentSAN.ToString();
+        UpdateHPSANText();
     }
 
     private IEnumerator HealthDamagePerformer(HealthDamageGA healthDamageGA)
@@ -36,7 +38,7 @@ public class TempDamageSystem : Singleton<TempDamageSystem>
         currentHP -= damage;
         if(currentHP <= 0)
             currentHP = 0;
-        HP.text = currentHP.ToString();
+        UpdateHPSANText();
         yield return null;
     }
 
@@ -46,7 +48,22 @@ public class TempDamageSystem : Singleton<TempDamageSystem>
         currentSAN -= damage;
         if(currentSAN <= 0)
             currentSAN = 0;
+        UpdateHPSANText();
+        yield return null;
+    }
+    
+    private IEnumerator mmPerformer(multiMentalGA mmGA)
+    {
+        currentSAN += ManaSystem.Instance.GetCurrentMana() * mmGA.Multipler;
+        if(currentSAN <= 0)
+            currentSAN = 0;
         SAN.text = currentSAN.ToString();
         yield return null;
+        
+    }
+    public void UpdateHPSANText()
+    {
+        HP.text = currentHP.ToString();
+        SAN.text = currentSAN.ToString();
     }
 }

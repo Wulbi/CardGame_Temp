@@ -10,12 +10,17 @@ public class CharmMoneySystem : Singleton<CharmMoneySystem>
     public int targetMoney;
     public TMP_Text Charm;
     public int currentCharm;
+    private bool lieEffectOn = false;
+    //[SerializeField] private bool cleaningEffectOn = false;
     
     void OnEnable()
     {
         ActionSystem.AttachPerformer<CharmGA>(CharmPerformer);
         ActionSystem.AttachPerformer<MoneyGA>(MoneyPerformer);
         ActionSystem.AttachPerformer<TheftGA>(TheftEffectPerformer);
+        ActionSystem.SubscribeReaction<EnableLieEffectGA>(LieEffectPostReaction, ReactionTiming.POST);
+        ActionSystem.SubscribeReaction<CleaningGA>(CleaningPostReaction, ReactionTiming.POST);
+        ActionSystem.SubscribeReaction<SetDeckGA>(SetDeckPreReaction, ReactionTiming.PRE);
         targetMoney = 10;
     }
 
@@ -24,6 +29,9 @@ public class CharmMoneySystem : Singleton<CharmMoneySystem>
         ActionSystem.DetachPerformer<CharmGA>();
         ActionSystem.DetachPerformer<MoneyGA>();
         ActionSystem.DetachPerformer<TheftGA>();
+        ActionSystem.UnSubscribeReaction<EnableLieEffectGA>(LieEffectPostReaction, ReactionTiming.POST);
+        ActionSystem.UnSubscribeReaction<CleaningGA>(CleaningPostReaction, ReactionTiming.POST);
+        ActionSystem.UnSubscribeReaction<SetDeckGA>(SetDeckPreReaction, ReactionTiming.PRE);
     }
     
     private void Start()
@@ -36,8 +44,6 @@ public class CharmMoneySystem : Singleton<CharmMoneySystem>
     {
         int gain = charmGA.Amount;
         currentCharm += gain; 
-        if(currentCharm <= 0)
-            currentCharm = 0;
         Charm.text = currentCharm.ToString();
         yield return null;
     }
@@ -46,8 +52,6 @@ public class CharmMoneySystem : Singleton<CharmMoneySystem>
     {
         int gain = moneyGA.Amount;
         currentMoney += gain;
-        if(currentMoney <= 0)
-            currentMoney = 0;
         Money.text = currentMoney.ToString();
         yield return null;
     }
@@ -68,9 +72,63 @@ public class CharmMoneySystem : Singleton<CharmMoneySystem>
 
                 //Debug.Log($"[TheftBoost] 절도 카드 강화: Charm={card.currentCharm}, Money={card.currentMoney}");
             }
+            
         }
 
         yield return null;
+    }
+
+    private void LieEffectPostReaction (EnableLieEffectGA ga)
+    {
+        if (!lieEffectOn)
+        {
+            lieEffectOn = true;
+            foreach (var card in CardSystem.Instance.GetAllCards())
+            {
+                if (card.CardName == "용돈 조르기")
+                {
+                    card.CharmMultiplier *= 2;
+                    card.MoneyMultiplier *= 2;
+                    card.RecomputeCurrent(); 
+                
+                    CardView view = CardViewCreator.Instance.GetCardView(card);
+                    if (view != null)
+                        view.Setup(card);
+                }
+            
+            }
+        }
+    }
+
+    private void CleaningPostReaction(CleaningGA ga)
+    {
+        /*
+        if (!cleaningEffectOn)
+        {
+            cleaningEffectOn = true;
+            foreach (var card in CardSystem.Instance.GetAllCards())
+            {
+                if (card.CardName == "방청소")
+                {
+                    card.CharmMultiplier /= 2;
+                    card.MoneyMultiplier /= 2;
+                    card.RecomputeCurrent(); 
+                
+                    CardView view = CardViewCreator.Instance.GetCardView(card);
+                    if (view != null)
+                        view.Setup(card);
+                    Debug.Log("방청소 효과 적용 완료");
+                }
+            
+            }
+        }
+        */
+    }
+    
+    public void SetDeckPreReaction(SetDeckGA ga)
+    {
+        lieEffectOn = false;
+        //cleaningEffectOn = false;
     }
     
 }

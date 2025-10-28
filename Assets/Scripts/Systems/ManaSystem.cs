@@ -31,6 +31,7 @@ public class ManaSystem : Singleton<ManaSystem>
     {
         currentMana -= spendManaGa.Amount;
         manaUI.UpdateManaText(currentMana);
+        CardSystem.Instance.CheckPCKaraoke();
         yield return null;
     }
 
@@ -45,5 +46,10 @@ public class ManaSystem : Singleton<ManaSystem>
     {
         RefillManaGA refillManaGA = new();
         ActionSystem.Instance.AddReaction(refillManaGA);
+    }
+
+    public int GetCurrentMana()
+    {
+        return currentMana;
     }
 }

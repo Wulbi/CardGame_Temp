@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59ecc336080a397488a5148f62299e8b, type: 3}
+  m_Name: Meditation
+  m_EditorClassIdentifier: 
+  <Image>k__BackingField: {fileID: 21300000, guid: be16f91768a66ee42aefe3cfb9e7ad76, type: 3}
+  <Mana>k__BackingField: 1
+  <Money>k__BackingField: 0
+  <Charm>k__BackingField: 5
+  <CardName>k__BackingField: "\uBA85\uC0C1"
+  <Desc>k__BackingField: "\uC815\uC2E0\uB825\uC744 5 \uD68C\uBCF5\uD569\uB2C8\uB2E4.
+    \uD328\uC758 \uD589\uB3D9 \uCE74\uB4DC\uB97C \uC804\uBD80 \uBC84\uB9BD\uB2C8\uB2E4.
+    \uB371\uC744 \uC154\uD50C\uD569\uB2C8\uB2E4. \uB371\uC5D0\uC11C \uBC84\uB9B0
+    \uD589\uB3D9 \uCE74\uB4DC\uC758 \uAC1C\uC218 \uB9CC\uD07C \uB2E4\uC2DC \uD589\uB3D9
+    \uCE74\uB4DC\uB97C \uAC00\uC838\uC635\uB2C8\uB2E4."
+  <CardType>k__BackingField: 0
+  <CardMapType>k__BackingField: 0
+  <Effects>k__BackingField:
+  - rid: 5696320782598668307
+  - rid: 5696320782598668308
+  references:
+    version: 2
+    RefIds:
+    - rid: 5696320782598668307
+      type: {class: SANDamageEffect, ns: , asm: Assembly-CSharp}
+      data:
+        sanDamage: -5
+    - rid: 5696320782598668308
+      type: {class: MeditationEffect, ns: , asm: Assembly-CSharp}
+      data: 
